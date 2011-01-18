@@ -670,7 +670,7 @@ static irqreturn_t microp_i2c_intr_irq_handler(int irq, void *dev_id)
 	client = to_i2c_client(dev_id);
 	cdata = i2c_get_clientdata(client);
 
-	disable_irq(client->irq);
+	disable_irq_nosync(client->irq);
 	queue_work(cdata->microp_queue, &cdata->work.work);
 	return IRQ_HANDLED;
 }
