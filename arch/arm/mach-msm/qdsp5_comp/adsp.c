@@ -598,8 +598,15 @@ static void handle_adsp_rtos_mtoa_app(struct rpc_request_hdr *req)
 	struct adsp_rtos_mp_mtoa_type	*pkt_ptr;
 	struct queue_to_offset_type	*qptr;
 	struct queue_to_offset_type	*qtbl;
+<<<<<<< HEAD
 	struct mod_to_queue_offsets	*mqptr;
 	struct mod_to_queue_offsets	*mqtbl;
+=======
+#if defined(CONFIG_ARCH_MSM7227)
+	struct mod_to_queue_offsets	*mqptr;
+	struct mod_to_queue_offsets	*mqtbl;
+#endif
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 	uint32_t	*mptr;
 	uint32_t	*mtbl;
 	uint32_t	q_idx;
@@ -1086,9 +1093,15 @@ static int msm_adsp_probe(struct platform_device *pdev)
 	rc = adsp_init_info(&adsp_info);
 	if (rc)
 		return rc;
+<<<<<<< HEAD
 	adsp_info.send_irq += MSM_AD5_BASE;
 	adsp_info.read_ctrl += MSM_AD5_BASE;
 	adsp_info.write_ctrl += MSM_AD5_BASE;
+=======
+	adsp_info.send_irq += (uint32_t) MSM_AD5_BASE;
+	adsp_info.read_ctrl += (uint32_t) MSM_AD5_BASE;
+	adsp_info.write_ctrl += (uint32_t) MSM_AD5_BASE;
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 	count = adsp_info.module_count;
 
 	adsp_modules = kzalloc(
@@ -1168,7 +1181,11 @@ fail_request_irq:
 static struct platform_driver msm_adsp_driver = {
 	.probe = msm_adsp_probe,
 	.driver = {
+<<<<<<< HEAD
 		.name = ADSP_DRIVER_NAME,
+=======
+		.name = MSM_ADSP_DRIVER_NAME,
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 		.owner = THIS_MODULE,
 	},
 };

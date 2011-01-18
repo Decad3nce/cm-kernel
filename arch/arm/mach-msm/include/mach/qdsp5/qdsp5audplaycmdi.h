@@ -44,7 +44,11 @@ $Header: //source/qcom/qct/multimedia2/Audio/drivers/QDSP5Driver/QDSP5Interface/
 #define AUDPLAY_CMD_BITSTREAM_DATA_AVAIL_LEN	\
 	sizeof(audplay_cmd_bitstream_data_avail)
 
+<<<<<<< HEAD
 #define AUDPLAY_CMD_AUDDEC_CMD_CHANNEL_INFO             0x0001
+=======
+#define AUDPLAY_CMD_AUDDEC_CMD_CHANNEL_INFO		0x0001
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 
 /* Type specification of dec_data_avail message sent to AUDPLAYTASK
 */
@@ -97,9 +101,16 @@ struct audplay_cmd_buffer_refresh {
 } __attribute__((packed));
 
 typedef struct {
+<<<<<<< HEAD
         /* command id */
         unsigned int cmd_id;
         unsigned int unused;
         unsigned int dual_mono_mode;
+=======
+	/* command id */
+	unsigned int cmd_id;
+	unsigned int unused;
+	unsigned int dual_mono_mode;
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 } __attribute__((packed)) audplay_cmd_channel_info;
 #endif /* QDSP5AUDPLAYCMD_H */

@@ -130,7 +130,11 @@ void put_vocpcm_data(uint32_t *pcm_data, uint32_t cb_id, uint32_t len,
 		spin_lock_irqsave(&ctxt->dsp_lock, flags);
 
 		buf_index = ctxt->tail;
+<<<<<<< HEAD
 		frame = ctxt->buf[buf_index].data;
+=======
+		frame = &ctxt->buf[buf_index];
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 		data_index = frame->index * FRAME_SIZE;
 		data = &frame->data[data_index];
 
@@ -178,7 +182,11 @@ void get_vocpcm_data(const uint32_t *pcm_data, uint32_t cb_id, uint32_t len)
 		return;
 
 	buf_index = ctxt->head;
+<<<<<<< HEAD
 	frame = ctxt->buf[buf_index].data;
+=======
+	frame = &ctxt->buf[buf_index];
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 
 	if (len != FRAME_SIZE) {
 		pr_err("len error\n");
@@ -188,7 +196,11 @@ void get_vocpcm_data(const uint32_t *pcm_data, uint32_t cb_id, uint32_t len)
 	data_index = frame->index * FRAME_SIZE;
 	data = &frame->data[data_index];
 
+<<<<<<< HEAD
 	for (i; i < FRAME_SIZE; i++)
+=======
+	for (i = 0; i < FRAME_SIZE; i++)
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 		*(data+i) = be32_to_cpu(*(pcm_data+i));
 	if (++frame->index == FRAME_NUM) {
 		frame->index = 0;
@@ -315,7 +327,11 @@ static long vocpcm_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 		if (ctxt->intr % 2) {
 			if (ctxt->s_ptr) {
 				index = ctxt->head;
+<<<<<<< HEAD
 				frame = ctxt->buf[index].data;
+=======
+				frame = &ctxt->buf[index];
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 				data_index = FRAME_NUM * FRAME_SIZE - 1;
 				dest = (uint8_t *)&frame->data[data_index] + 1;
 				len = dest - ctxt->s_ptr + 1;
@@ -361,7 +377,10 @@ static ssize_t vocpcm_read(struct file *file, char __user *buf,
 	struct voc_ctxt *ctxt = file->private_data;
 	struct buffer *frame;
 	const char __user *start = buf;
+<<<<<<< HEAD
 	const int size = BUFFER_SIZE * 2;
+=======
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 	unsigned long flags;
 	uint32_t index;
 	uint32_t data_index;
@@ -385,7 +404,11 @@ static ssize_t vocpcm_read(struct file *file, char __user *buf,
 			break;
 
 		index = ctxt->tail;
+<<<<<<< HEAD
 		frame = ctxt->buf[index].data;
+=======
+		frame = &ctxt->buf[index];
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 
 		if (ctxt->s_ptr == NULL)
 			ctxt->s_ptr = (uint8_t *)&frame->data;
@@ -434,7 +457,10 @@ static ssize_t vocpcm_write(struct file *file, const char __user *buf,
 	struct voc_ctxt *ctxt = file->private_data;
 	struct buffer *frame;
 	const char __user *start = buf;
+<<<<<<< HEAD
 	const int size = BUFFER_SIZE * 2;
+=======
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 	unsigned long flags;
 	uint32_t index;
 	uint32_t data_index;
@@ -458,7 +484,11 @@ static ssize_t vocpcm_write(struct file *file, const char __user *buf,
 			break;
 
 		index = ctxt->head;
+<<<<<<< HEAD
 		frame = ctxt->buf[index].data;
+=======
+		frame = &ctxt->buf[index];
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 
 		if (ctxt->s_ptr == NULL)
 			ctxt->s_ptr = (uint8_t *)&frame->data;

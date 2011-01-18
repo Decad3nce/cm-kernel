@@ -662,6 +662,7 @@ static void microp_i2c_clear_led_data(struct i2c_client *client)
 	}
 }
 
+/* Riemer: tracked down the system hang here */
 static irqreturn_t microp_i2c_intr_irq_handler(int irq, void *dev_id)
 {
 	struct i2c_client *client;
@@ -670,7 +671,11 @@ static irqreturn_t microp_i2c_intr_irq_handler(int irq, void *dev_id)
 	client = to_i2c_client(dev_id);
 	cdata = i2c_get_clientdata(client);
 
+<<<<<<< HEAD
 	disable_irq_nosync(client->irq);
+=======
+	disable_irq_nosync(client->irq); // Same as irq?
+>>>>>>> f9ab85919845915a3362913001cb23303abdf440
 	queue_work(cdata->microp_queue, &cdata->work.work);
 	return IRQ_HANDLED;
 }
@@ -1001,7 +1006,7 @@ static int microp_get_mic_value(void *argu)
 	return ret;
 }
 
-static void microp_unplug_mic(void *argu)
+static int microp_unplug_mic(void *argu)
 {
 	struct microp_i2c_platform_data *pdata;
 	struct i2c_client *client;
@@ -1011,7 +1016,7 @@ static void microp_unplug_mic(void *argu)
 	client = private_microp_client;
 	if (!client)	{
 		printk(KERN_ERR "%s: dataset: client is empty\n", __func__);
-		return;
+		return -EIO;
 	}
 	pdata = client->dev.platform_data;
 
@@ -1019,13 +1024,13 @@ static void microp_unplug_mic(void *argu)
 	ret = set_microp_mic_intr(0);
 	if (ret < 0) {
 		dev_err(&client->dev, "%s: set microp mic interrupt error\n", __func__);
-		return;
+		return -EIO;
 	}
 
 	pdata->microp_mic_status = 0;
 	dev_dbg(&client->dev, "%s: microp_mic_status (plug out): 0x%d\n", __func__, pdata->microp_mic_status);
 
-	return;
+	return 0;
 }
 
 int microp_i2c_set_pin_mode(uint8_t pin, uint8_t mode, void *dev_id)
@@ -2875,9 +2880,8 @@ static int microp_i2c_probe(struct i2c_client *client,
 	INIT_DELAYED_WORK(&auto_bl_delay_work,
 			microp_i2c_auto_bl_work_func);
 
-	// Riemer: Does not work
 	/* Light Sensor */
-	/*cdata->ls_input_dev = input_allocate_device();
+	cdata->ls_input_dev = input_allocate_device();
 	if (!cdata->ls_input_dev) {
 		pr_err("%s: could not allocate input device\n", __func__);
 		ret = -ENOMEM;
@@ -2899,7 +2903,7 @@ static int microp_i2c_probe(struct i2c_client *client,
 		dev_err(&client->dev, "%s: can not register misc device\n",
 				__func__);
 		goto err_register_misc_register;
-	}*/
+	}
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
 	if (cdata->enable_early_suspend)	{
