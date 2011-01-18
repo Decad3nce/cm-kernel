@@ -106,10 +106,7 @@ done:
 	local_irq_restore(flags);
 }
 
-<<<<<<< HEAD
-=======
 #if 0
->>>>>>> f9ab85919845915a3362913001cb23303abdf440
 static void ev_log_freeze(struct ev_log *log, unsigned count)
 {
 	unsigned long flags;
@@ -117,10 +114,7 @@ static void ev_log_freeze(struct ev_log *log, unsigned count)
 	log->fault = count;
 	local_irq_restore(flags);
 }
-<<<<<<< HEAD
-=======
 #endif
->>>>>>> f9ab85919845915a3362913001cb23303abdf440
 
 static int ev_log_open(struct inode *inode, struct file *file)
 {

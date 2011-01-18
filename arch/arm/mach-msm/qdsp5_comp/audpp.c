@@ -200,11 +200,7 @@ static int audpp_dsp_set_adrc(void)
 	return audpp_send_queue3(&cmd, sizeof(cmd));
 }
 
-<<<<<<< HEAD
-static int audpp_dsp_set_eq()
-=======
 static int audpp_dsp_set_eq(void)
->>>>>>> f9ab85919845915a3362913001cb23303abdf440
 {
 	struct audpp_state *audpp = &the_audpp_state;
 	struct audpp_cmd_cfg_object_params_eq cmd;
@@ -224,11 +220,7 @@ static int audpp_dsp_set_eq(void)
 	return audpp_send_queue3(&cmd, sizeof(cmd));
 }
 
-<<<<<<< HEAD
-static int audpp_dsp_set_rx_iir()
-=======
 static int audpp_dsp_set_rx_iir(void)
->>>>>>> f9ab85919845915a3362913001cb23303abdf440
 {
 	struct audpp_state *audpp = &the_audpp_state;
 	struct audpp_cmd_cfg_object_params_rx_iir cmd;
@@ -325,14 +317,11 @@ static void audpp_dsp_event(void *data, unsigned id, size_t len,
 		} else
 			pr_err("audpp: invalid config msg %d\n", msg[0]);
 		break;
-<<<<<<< HEAD
-=======
 	case ADSP_MESSAGE_ID:
 		pr_info("audpp: module enabled\n");
 		break;
 	default:
 		pr_info("audpp: unhandled msg id %x\n", id);
->>>>>>> f9ab85919845915a3362913001cb23303abdf440
 	}
 }
 
@@ -592,14 +581,9 @@ static int audpp_enable_rx_iir(struct audpp_state *audpp, int enable)
 static long audpp_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	struct audpp_state *audpp = file->private_data;
-<<<<<<< HEAD
-	int rc = 0, enable, i;
-	uint16_t enable_mask;
-=======
 	int rc = 0, enable;
 	uint16_t enable_mask;
 	/* int i; */
->>>>>>> f9ab85919845915a3362913001cb23303abdf440
 
 	mutex_lock(audpp->lock);
 	switch (cmd) {

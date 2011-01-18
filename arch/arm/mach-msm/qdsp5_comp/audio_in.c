@@ -258,12 +258,9 @@ static void audpre_dsp_event(void *data, unsigned id, size_t len,
 	case AUDPREPROC_MSG_ERROR_MSG_ID:
 		pr_info("audpre: err_index %d\n", msg[0]);
 		break;
-<<<<<<< HEAD
-=======
 	case ADSP_MESSAGE_ID:
 		pr_info("audpre: module enabled\n");
 		break;
->>>>>>> f9ab85919845915a3362913001cb23303abdf440
 	default:
 		pr_err("audpre: unknown event %d\n", id);
 	}
@@ -344,12 +341,9 @@ static void audrec_dsp_event(void *data, unsigned id, size_t len,
 		msg[0], (msg[1] | (msg[2] << 16)));*/
 		audio_in_get_dsp_frames(audio);
 		break;
-<<<<<<< HEAD
-=======
 	case ADSP_MESSAGE_ID:
 		pr_info("audrec: module enabled\n");
 		break;
->>>>>>> f9ab85919845915a3362913001cb23303abdf440
 	default:
 		pr_err("audrec: unknown event %d\n", id);
 	}
