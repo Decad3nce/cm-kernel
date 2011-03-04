@@ -350,7 +350,7 @@ static void mdp_dmas_to_mddi(void *priv, uint32_t addr, uint32_t stride,
 	mdp_writel(mdp, dma2_cfg, MDP_DMA_S_CONFIG);
 	mdp_writel(mdp, 0, MDP_DMA_S_START);
 }
-
+#else
 static void mdp_dmas_to_mddi(void *priv, uint32_t addr, uint32_t stride,
                 uint32_t width, uint32_t height, uint32_t x, uint32_t y)
 {
@@ -400,6 +400,7 @@ static void mdp_dmas_to_mddi(void *priv, uint32_t addr, uint32_t stride,
         mdp_writel(mdp, dma2_cfg, MDP_DMA_S_CONFIG);
         mdp_writel(mdp, 0, MDP_DMA_S_START);
 }
+#endif
 
 static void mdp_dma_to_mddi(void *priv, uint32_t addr, uint32_t stride,
 			    uint32_t width, uint32_t height, uint32_t x,
@@ -499,7 +500,6 @@ static void mdp_dma_to_mddi(void *priv, uint32_t addr, uint32_t stride,
 	mdp_writel(mdp, 0, MDP_DMA_P_START);
 #endif
 }
-#endif	/* ifndef CONFIG_MSM_MDP40 */
 
 void mdp_dma(struct mdp_device *mdp_dev, uint32_t addr, uint32_t stride,
 	     uint32_t width, uint32_t height, uint32_t x, uint32_t y,
@@ -760,80 +760,6 @@ int register_mdp_client(struct class_interface *cint)
 /* leaving in for now, even if later patches remove */
 
 #include "mdp_csc_table.h"
-
-void mdp_hw_init(struct mdp_info *mdp)
-{
-	int n;
-	int lcdc_enabled;
-
-	mdp_irq_mask = 0;
-
-	mdp_writel(mdp, 0, MDP_INTR_ENABLE);
-
-	/* debug interface write access */
-	mdp_writel(mdp, 1, 0x60);
-	mdp_writel(mdp, 1, MDP_EBI2_PORTMAP_MODE);
-
-#ifndef CONFIG_MSM_MDP22
-	
-	lcdc_enabled = mdp_readl(mdp, MDP_LCDC_EN);
-	/* disable lcdc */
-	mdp_writel(mdp, 0, MDP_LCDC_EN);
-	/* enable auto clock gating for all blocks by default */
-	mdp_writel(mdp, 0xffffffff, MDP_CGC_EN);
-	/* reset color/gamma correct parms */
-	mdp_writel(mdp, 0, MDP_DMA_P_COLOR_CORRECT_CONFIG);
-#endif
-
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x01f8);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x01fc);
-	mdp_writel(mdp, 1, 0x60);
-
-	for (n = 0; n < ARRAY_SIZE(csc_color_lut); n++)
-		mdp_writel(mdp, csc_color_lut[n].val, csc_color_lut[n].reg);
-
-	/* clear up unused fg/main registers */
-	/* comp.plane 2&3 ystride */
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x0120);
-
-	/* unpacked pattern */
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x012c);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x0130);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x0134);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x0158);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x015c);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x0160);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x0170);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x0174);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x017c);
-
-	/* comp.plane 2 & 3 */
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x0114);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x0118);
-
-	/* clear unused bg registers */
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x01c8);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x01d0);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x01dc);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x01e0);
-	mdp_writel(mdp, 0, MDP_CMD_DEBUG_ACCESS_BASE + 0x01e4);
-
-	for (n = 0; n < ARRAY_SIZE(csc_matrix_config_table); n++)
-		mdp_writel(mdp, csc_matrix_config_table[n].val,
-			   csc_matrix_config_table[n].reg);
-
-	mdp_ppp_init_scale(mdp);
-
-#ifndef CONFIG_MSM_MDP31
-	mdp_writel(mdp, 0x04000400, MDP_COMMAND_CONFIG);
-#endif
-
-#ifndef CONFIG_MSM_MDP22
-        if(lcdc_enabled)
-                mdp_writel(mdp, 1, MDP_LCDC_EN);
-#endif
-
-}
 
 uint32_t msm_mdp_base;
 int mdp_probe(struct platform_device *pdev)
